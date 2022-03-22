@@ -11,7 +11,9 @@ class Docker {
 
     def login(String credentialsId) {
         script.echo 'Login to docker...'
-        script.sh "echo $script.PASS | docker login -u $script.USER --pasword-stdin"
+        script.withCredentials([script.usernamePassword(creentialsId: credentialsId, passwordVariable: "PASS", usernameVariable: "User")]) {
+            script.sh "echo $script.PASS | docker login -u $script.USER --pasword-stdin"
+        }
     }
 
     def buildImage(String imageName) {
